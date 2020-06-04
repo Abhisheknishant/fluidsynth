@@ -2,6 +2,9 @@ language: c
 sudo: false
 os: linux
 dist: bionic
+arch:
+    - amd64
+    - arm64
 addons:
   apt:
     update: true
@@ -43,6 +46,10 @@ matrix:
     - env:
         - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8 && sudo apt-get install gcc-8"
         - CMAKE_FLAGS="-Denable-debug=1 -DCMAKE_C_FLAGS_DEBUG=-fuse-ld=gold"
+    - arch: arm64
+      env:
+        - MATRIX_EVAL="CC=gcc-8 && CXX=g++-8 && sudo apt-get install gcc-8"
+        - CMAKE_FLAGS="-Denable-debug=1 -DCMAKE_C_FLAGS_DEBUG=-fuse-ld=gold"
 
     - env:
         - MATRIX_EVAL="CC=clang-7 && CXX=clang++-7 && sudo apt-get install clang-7"
@@ -52,6 +59,15 @@ matrix:
         - CMAKE_FLAGS="-Denable-profiling=1 -DCMAKE_C_FLAGS_DEBUG=-fuse-ld=gold"
 
     - env:
+        - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9 && sudo apt-get install clang-9"
+
+    - arch: arm64
+      env:
+        - MATRIX_EVAL="CC=clang-8 && CXX=clang++-8 && sudo rm -f /usr/local/clang-7.0.0/bin/clang-tidy && sudo ln -s /usr/bin/clang-tidy-8 /usr/bin/clang-tidy && sudo apt-get install clang-8 clang-tidy-8"
+        - CMAKE_FLAGS="-Denable-profiling=1 -DCMAKE_C_FLAGS_DEBUG=-fuse-ld=gold"
+
+    - arch: arm64
+      env:
         - MATRIX_EVAL="CC=clang-9 && CXX=clang++-9 && sudo apt-get install clang-9"
 
     - os: linux-ppc64le
